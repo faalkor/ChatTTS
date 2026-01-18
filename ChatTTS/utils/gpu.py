@@ -53,6 +53,7 @@ def select_device(min_memory=2047, experimental=False):
         if experimental:
             logger.get_logger().warning("experimental: using DML.")
             import torch_directml
+
             device = torch_directml.device(torch_directml.default_device())
         else:
             logger.get_logger().info("found DML, but use CPU.")

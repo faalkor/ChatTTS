@@ -25,8 +25,8 @@ custom_path: Optional[str] = None
 has_interrupted = False
 is_in_generate = False
 
-enable_cache=True
-experimental=False
+enable_cache = True
+experimental = False
 
 seed_min = 1
 seed_max = 4294967295
@@ -64,11 +64,13 @@ def on_audio_seed_change(audio_seed_input):
         rand_spk = chat.sample_random_speaker()
     return rand_spk
 
+
 def set_params(en_cache, exp):
     global enable_cache, experimental
 
     enable_cache = en_cache
     experimental = exp
+
 
 def load_chat(cust_path: Optional[str], coef: Optional[str]) -> bool:
     global enable_cache, experimental
@@ -78,7 +80,11 @@ def load_chat(cust_path: Optional[str], coef: Optional[str]) -> bool:
     else:
         logger.info("local model path: %s", cust_path)
         ret = chat.load(
-            "custom", custom_path=cust_path, coef=coef, enable_cache=enable_cache, experimental=experimental
+            "custom",
+            custom_path=cust_path,
+            coef=coef,
+            enable_cache=enable_cache,
+            experimental=experimental,
         )
         global custom_path
         custom_path = cust_path

@@ -300,7 +300,8 @@ class GPT(nn.Module):
         end_idx_int = end_idx.int()
 
         inputs_ids_lst = [
-            inputs_ids[idx].narrow(0, start_idx, int(i)) for idx, i in enumerate(end_idx_int)
+            inputs_ids[idx].narrow(0, start_idx, int(i))
+            for idx, i in enumerate(end_idx_int)
         ]
         if infer_text:
             inputs_ids_lst = [i.narrow(1, 0, 1).squeeze_(1) for i in inputs_ids_lst]
@@ -309,7 +310,8 @@ class GPT(nn.Module):
         if len(hiddens) > 0:
             hiddens_lst = torch.stack(hiddens, 1)
             hiddens_lst = [
-                hiddens_lst[idx].narrow(0, 0, int(i)) for idx, i in enumerate(end_idx_int)
+                hiddens_lst[idx].narrow(0, 0, int(i))
+                for idx, i in enumerate(end_idx_int)
             ]
 
         return self.GenerationOutputs(
@@ -341,7 +343,7 @@ class GPT(nn.Module):
         manual_seed: Optional[int] = None,
         context=Context(),
     ):
-        
+
         self.logger.debug("start generate")
 
         attentions: List[Optional[Tuple[torch.FloatTensor, ...]]] = []
@@ -353,7 +355,9 @@ class GPT(nn.Module):
         )
         finish = torch.zeros(inputs_ids.shape[0], device=inputs_ids.device).bool()
 
-        self.logger.debug(f"set start_idx: {start_idx}, end_idx and finish with all zeros, len {inputs_ids.shape[0]}")
+        self.logger.debug(
+            f"set start_idx: {start_idx}, end_idx and finish with all zeros, len {inputs_ids.shape[0]}"
+        )
 
         old_temperature = temperature
 
@@ -364,7 +368,9 @@ class GPT(nn.Module):
             .view(-1, 1)
         )
 
-        self.logger.debug(f"expand temperature from shape {old_temperature.shape} to {temperature.shape}")
+        self.logger.debug(
+            f"expand temperature from shape {old_temperature.shape} to {temperature.shape}"
+        )
 
         attention_mask_cache = torch.ones(
             (
@@ -374,7 +380,9 @@ class GPT(nn.Module):
             dtype=torch.bool,
             device=inputs_ids.device,
         )
-        self.logger.debug(f"init attention_mask_cache with shape {attention_mask_cache.shape}")
+        self.logger.debug(
+            f"init attention_mask_cache with shape {attention_mask_cache.shape}"
+        )
         if attention_mask is not None:
             attention_mask_cache.narrow(1, 0, attention_mask.shape[1]).copy_(
                 attention_mask
@@ -391,7 +399,9 @@ class GPT(nn.Module):
             device=inputs_ids.device,
         )
         inputs_ids_buf.narrow(1, 0, progress).copy_(inputs_ids)
-        self.logger.debug(f"expand inputs_ids buf from shape {inputs_ids.shape} to {inputs_ids_buf.shape}")
+        self.logger.debug(
+            f"expand inputs_ids buf from shape {inputs_ids.shape} to {inputs_ids_buf.shape}"
+        )
         del inputs_ids
         inputs_ids = inputs_ids_buf.narrow(1, 0, progress)
 
@@ -605,7 +615,7 @@ class GPT(nn.Module):
                         yield result
                     del inputs_ids
                 return
-            
+
             self.logger.debug("start output")
 
             del idx_next
