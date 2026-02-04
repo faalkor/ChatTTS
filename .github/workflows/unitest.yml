@@ -33,16 +33,16 @@ jobs:
           . .venv/bin/activate
           echo PATH=$PATH >> $GITHUB_ENV
 
-      - name: Install Python dependencies
-        run: |
-          pip install --upgrade pip
-          pip install requests
-
       - name: Test Install
         run: pip install .
 
       - name: Install Dependencies
         run: pip install -r requirements.txt
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install requests "transformers==4.41.2"
 
       - name: Run Test
         run: tests/testall.sh
